@@ -57,4 +57,4 @@ We welcome contributions to help find solutions for human problems! To contribut
     ```
 5. **Submit a Pull Request**: Finally, submit a pull request detailing the changes you made and the problem you solved.
 
-Thank you for contributing to Querulous! We look forward to your innovative solutions and ideas. 🙌
+Thank you for contributing to Querulous! We look forward to your innovative solutions and ideas. 
