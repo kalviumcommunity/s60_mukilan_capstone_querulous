@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
-
+const userRoutes = require('./Routes');
 
 require('dotenv').config();
 
@@ -11,7 +11,7 @@ const MONGO_URL = process.env.MONGO_URL;
 
 app.use(cors());
 app.use(express.json());
-
+app.use('/api/user', userRoutes);
 
 app.get("/", (req, res) => {
     res.send("Hello, World!")
