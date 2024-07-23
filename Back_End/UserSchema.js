@@ -64,6 +64,28 @@ const userSchema = new mongoose.Schema({
     }]
 });
 
+// Post Schema
+const postSchema = new mongoose.Schema({
+    post: {
+         type: String
+    },
+    img: {
+         type: String
+    },
+    vid: {
+         type: String
+    },
+    added_by:{
+         type: String
+    },
+    title:{
+         type:String
+    },
+    date:{
+         type: String
+    }
+ });
+ 
 const User = mongoose.model('User', userSchema);
-
-module.exports = { User};
+const Post = mongoose.model('Post', postSchema);
+module.exports = { User, Post };
