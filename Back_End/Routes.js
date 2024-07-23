@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const { User, Post } = require('./UserSchema'); // Import the Mongoose models
 const nodeMailer = require("nodemailer");
 
 // Register a new user
@@ -203,7 +203,67 @@ router.post("/post", async (req, res) => {
         res.status(500).send("Server error");
     }
 });
+//check post
 
+router.get("/check", async (req, res) => {
+    const { added_by } = req.query;
+    try {
+      const posts = await Post.find({ added_by });
+      if (!posts.length) {
+        return res.status(400).json({ message: "User email not found. Please refresh the page and log in again." });
+      }
+      const postsWithMediaFlags = posts.map(post => ({
+        ...post.toObject(),
+        hasImg: !!post.img,
+        hasVid: !!post.vid
+      }));
+      res.status(200).json({ message: "Successfully email is checked", posts: postsWithMediaFlags });
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+//Date
+router.get("/date", (req, res) => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().split('T')[0]; 
+    res.json({ currentDate: formattedDate });
+});
+
+
+
+
+// Fetch a specific post by ID
+router.get('/posts/:id', async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        res.json(post);
+    } catch (error) {
+        console.error('Error fetching post data:', error.message);
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }
+});
+
+
+// **Home page request**
+
+//getting data and display in home
+router.get('/data',async(req,res)=>{
+    try{
+       const Homedata = await Post.find({})
+       if(!Homedata){
+        return res.status(404).json({ message: 'Post not found' })
+       } 
+       res.status(200).json({ message: 'successfull', data:Homedata });
+       console.log(Homedata)
+    }
+    catch(er){
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }
+})
 
 
 
