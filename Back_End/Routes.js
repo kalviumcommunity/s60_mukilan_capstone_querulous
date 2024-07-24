@@ -230,7 +230,23 @@ router.get("/date", (req, res) => {
     res.json({ currentDate: formattedDate });
 });
 
+//Delete post
 
+router.delete('/posts/:id', async (req, res) => {
+    const postId = req.params.id;
+
+    try {
+        const post = await Post.findByIdAndDelete(postId);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        const posts = await Post.find({ added_by: post.added_by });
+        res.status(200).json({ message: 'Post deleted successfully', posts });
+    } catch (error) {
+        console.error('Error deleting post:', error.message);
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }
+});
 
 
 // Fetch a specific post by ID
@@ -247,7 +263,24 @@ router.get('/posts/:id', async (req, res) => {
     }
 });
 
-
+// Update a specific post by ID
+router.put('/posts/:id', async (req, res) => {
+    const { title, post, img, vid } = req.body;
+    try {
+        const updatedPost = await Post.findByIdAndUpdate(
+            req.params.id,
+            { title, post, img, vid, hasImg: !!img, hasVid: !!vid },
+            { new: true }
+        );
+        if (!updatedPost) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        res.json(updatedPost);
+    } catch (error) {
+        console.error('Error updating post:', error.message);
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }
+});
 // **Home page request**
 
 //getting data and display in home
@@ -265,7 +298,25 @@ router.get('/data',async(req,res)=>{
     }
 })
 
+//Update password of user
 
+router.put('/reset', async (req, res) => {
+    const { email, password, confirmPassword } = req.body;
+    try {
+        const user = await User.findOneAndUpdate(
+            { email },
+            { password, confirmPassword }
+        );
+
+        if (user) {
+            res.status(200).json({ message: 'Password updated successfully.' });
+        } else {
+            res.status(404).json({ message: 'User not found in DB.' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Server error.', error });
+    }
+});
 
   
 module.exports = router;
