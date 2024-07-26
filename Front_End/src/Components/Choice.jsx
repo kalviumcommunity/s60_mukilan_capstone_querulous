@@ -40,7 +40,6 @@ export default function ChoicePage() {
     } else {
       setSelectedTopics((prev) => [...prev, name]);
     }
-    console.log(id);
   };
 
   console.log(selectedTopics);
