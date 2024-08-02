@@ -5,7 +5,8 @@ import LandingPage from './Components/LandingPage';
 import SignUp from './Components/SignUp';
 import ChoicePage from './Components/Choice';
 import HomePage from './Components/Home';
-
+import Profile from "./Components/Profile"
+import ProfileEdit from './Components/ProfileEdit';
 function App() {
 
   return (
@@ -17,6 +18,8 @@ function App() {
            <Route path="/SignUp" element={<SignUp/>}/>
            <Route path="/choice" element={<ChoicePage/>}/>
            <Route path="/home" element={<HomePage/>}/>
+           <Route path="/profile" element={<Profile/>}/>
+           <Route path="/edit" element={<ProfileEdit/>}/>
        </Routes>
    
     </>
