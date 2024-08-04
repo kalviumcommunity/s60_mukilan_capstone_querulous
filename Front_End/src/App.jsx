@@ -7,6 +7,8 @@ import ChoicePage from './Components/Choice';
 import HomePage from './Components/Home';
 import Profile from "./Components/Profile"
 import ProfileEdit from './Components/ProfileEdit';
+import PostPage from './Components/Post';
+import PostAdd from './Components/PostAdd';
 function App() {
 
   return (
@@ -20,6 +22,8 @@ function App() {
            <Route path="/home" element={<HomePage/>}/>
            <Route path="/profile" element={<Profile/>}/>
            <Route path="/edit" element={<ProfileEdit/>}/>
+           <Route path="/post" element={<PostPage/>}/>
+           <Route path="/add" element={<PostAdd/>}/>
        </Routes>
    
     </>
