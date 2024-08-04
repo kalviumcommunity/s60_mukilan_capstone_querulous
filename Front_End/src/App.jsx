@@ -9,6 +9,7 @@ import Profile from "./Components/Profile"
 import ProfileEdit from './Components/ProfileEdit';
 import PostPage from './Components/Post';
 import PostAdd from './Components/PostAdd';
+import Edit from './Components/Edit';
 function App() {
 
   return (
@@ -24,6 +25,7 @@ function App() {
            <Route path="/edit" element={<ProfileEdit/>}/>
            <Route path="/post" element={<PostPage/>}/>
            <Route path="/add" element={<PostAdd/>}/>
+           <Route path="/editPost/:id" element={<Edit/>}/>
        </Routes>
    
     </>
