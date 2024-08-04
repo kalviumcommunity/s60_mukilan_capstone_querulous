@@ -2,6 +2,31 @@ const express = require('express');
 const router = express.Router();
 const { User, Post } = require('./UserSchema'); // Import the Mongoose models
 const nodeMailer = require("nodemailer");
+const fs = require('fs');
+const path = require('path');
+
+
+const emailFile = path.join(__dirname,'emails.txt');
+//read
+const readEmails = ()=>{
+    try{
+       const data = fs.readFileSync(emailFile,'utf-8');
+       return data.split("\n").filter(email=>email.trim()!=='');
+    }
+    catch(er){
+      console.log("error email read",err)
+      return [];
+    }
+}
+//write
+const writeFile = (emails)=>{
+    try{
+     fs.writeFileSync(emailFile,emails.join('\n'),'utf8');
+    }
+    catch(err){
+      console.log("error write",err)
+    }
+}
 
 // Register a new user
 router.post('/register', async (req, res) => {
@@ -42,6 +67,9 @@ router.post('/register', async (req, res) => {
         });
 
         await user.save();
+        const emails = readEmails();
+        emails.push(email)
+        writeFile(emails)
         res.status(201).json({ message: 'User registered successfully', user });
 
     } catch (error) {
