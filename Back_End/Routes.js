@@ -6,25 +6,25 @@ const fs = require('fs');
 const path = require('path');
 
 
-const emailFile = path.join(__dirname,'emails.txt');
+const emailFile = path.join(__dirname, 'emails.txt');
 //read
-const readEmails = ()=>{
-    try{
-       const data = fs.readFileSync(emailFile,'utf-8');
-       return data.split("\n").filter(email=>email.trim()!=='');
+const readEmails = () => {
+    try {
+        const data = fs.readFileSync(emailFile, 'utf-8');
+        return data.split("\n").filter(email => email.trim() !== '');
     }
-    catch(er){
-      console.log("error email read",err)
-      return [];
+    catch (er) {
+        console.log("error email read", err)
+        return [];
     }
 }
 //write
-const writeFile = (emails)=>{
-    try{
-     fs.writeFileSync(emailFile,emails.join('\n'),'utf8');
+const writeFile = (emails) => {
+    try {
+        fs.writeFileSync(emailFile, emails.join('\n'), 'utf8');
     }
-    catch(err){
-      console.log("error write",err)
+    catch (err) {
+        console.log("error write", err)
     }
 }
 
@@ -112,20 +112,20 @@ router.post("/otp", async (req, res) => {
             return res.status(400).json({ message: "Invalid Email" });
         }
         var transporter = nodeMailer.createTransport({
-            service:"outlook",
-            auth:{
-                user:"rmr09570@gmail.com",
-                pass:"sodbwqertuvtbpjc"
+            service: "outlook",
+            auth: {
+                user: "rmr09570@gmail.com",
+                pass: "sodbwqertuvtbpjc"
             }
         });
         var mailOptions = {
-            from:"rmr09570@gmail.com",
-            to:email,
-            subject:"OTP Verification",
-            text:`your Otp ${randomOtp}`
+            from: "rmr09570@gmail.com",
+            to: email,
+            subject: "OTP Verification",
+            text: `your Otp ${randomOtp}`
         }
 
-        transporter.sendMail(mailOptions, function(error, info){
+        transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.log(error);
                 res.status(500).json({ message: "Error sending OTP" });
@@ -202,8 +202,8 @@ router.post("/verification", async (req, res) => {
 
 //Post page
 router.post("/post", async (req, res) => {
-    const { post, img, vid, added_by,title,date } = req.body;
-    
+    const { post, img, vid, added_by, title, date } = req.body;
+
     try {
         // Find the user by email
         const user = await User.findOne({ email: added_by });
@@ -236,25 +236,25 @@ router.post("/post", async (req, res) => {
 router.get("/check", async (req, res) => {
     const { added_by } = req.query;
     try {
-      const posts = await Post.find({ added_by });
-      if (!posts.length) {
-        return res.status(400).json({ message: "User email not found. Please refresh the page and log in again." });
-      }
-      const postsWithMediaFlags = posts.map(post => ({
-        ...post.toObject(),
-        hasImg: !!post.img,
-        hasVid: !!post.vid
-      }));
-      res.status(200).json({ message: "Successfully email is checked", posts: postsWithMediaFlags });
+        const posts = await Post.find({ added_by });
+        if (!posts.length) {
+            return res.status(400).json({ message: "User email not found. Please refresh the page and log in again." });
+        }
+        const postsWithMediaFlags = posts.map(post => ({
+            ...post.toObject(),
+            hasImg: !!post.img,
+            hasVid: !!post.vid
+        }));
+        res.status(200).json({ message: "Successfully email is checked", posts: postsWithMediaFlags });
     } catch (error) {
-      res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error" });
     }
-  });
+});
 
 //Date
 router.get("/date", (req, res) => {
     const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split('T')[0]; 
+    const formattedDate = currentDate.toISOString().split('T')[0];
     res.json({ currentDate: formattedDate });
 });
 
@@ -312,16 +312,16 @@ router.put('/posts/:id', async (req, res) => {
 // **Home page request**
 
 //getting data and display in home
-router.get('/data',async(req,res)=>{
-    try{
-       const Homedata = await Post.find({})
-       if(!Homedata){
-        return res.status(404).json({ message: 'Post not found' })
-       } 
-       res.status(200).json({ message: 'successfull', data:Homedata });
-       console.log(Homedata)
+router.get('/data', async (req, res) => {
+    try {
+        const Homedata = await Post.find({})
+        if (!Homedata) {
+            return res.status(404).json({ message: 'Post not found' })
+        }
+        res.status(200).json({ message: 'successfull', data: Homedata });
+        console.log(Homedata)
     }
-    catch(er){
+    catch (er) {
         res.status(500).json({ message: 'Server Error', error: error.message });
     }
 })
@@ -345,5 +345,32 @@ router.put('/reset', async (req, res) => {
         res.status(500).json({ message: 'Server error.', error });
     }
 });
+
+router.post("/connected", async (req, res) => {
+    const { senderName, senderEmail, recipientEmail, recipientName } = req.body;
+
+    const transporter = nodemailer.createTransport({
+        service: 'outlook',
+        auth: {
+            user: 'rmr09570@gmail.com',
+            pass: 'sodbwqertuvtbpjc'
+        },
+    });
+
+    const mailOptions = {
+        from: 'rmr09570@gmail.com',
+        to: senderEmail,
+        subject: `Connection Request from ${senderName}`,
+        text: `Hello ${recipientName},\n\n${senderName} has sent you a connection request.\n\nBest Regards,\nYour App`,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(200).send({ message: 'Email sent successfully' });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).send({ message: 'Failed to send email' });
+    }
+})
 
 module.exports = router;
