@@ -81,7 +81,7 @@ export default function HomePage() {
                             </Link>
                         </li>
                         <li>
-                        <Link to="/chat">
+                        <Link to="/connected">
                                 <div className="relative">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -92,7 +92,7 @@ export default function HomePage() {
                                     </span>
                                 </div>
                                 <div>
-                                    <p className="text-xs absolute bottom-0.5 left-[31%]">Chat</p>
+                                    <p className="text-xs absolute bottom-0.5 left-[25%]">connected list</p>
                                 </div>
                             </Link>
                         </li>
