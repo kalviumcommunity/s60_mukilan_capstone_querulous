@@ -27,8 +27,8 @@ export default function Edit() {
     cloudinary.current = window.cloudinary;
     widgetRef.current = cloudinary.current.createUploadWidget(
       {
-        cloudName: 'dioirlnnn',
-        uploadPreset: 'dawl8vga',
+        cloudName: "dioirlnnn",
+        uploadPreset: "dawl8vga",
       },
       (error, result) => {
         if (error) {
@@ -49,8 +49,8 @@ export default function Edit() {
     cloudinary2.current = window.cloudinary;
     widgetRef2.current = cloudinary2.current.createUploadWidget(
       {
-        cloudName: 'dioirlnnn',
-        uploadPreset: 'rlz83089',
+        cloudName: "dioirlnnn",
+        uploadPreset: "rlz83089",
       },
       (error, result) => {
         if (error) {
@@ -66,7 +66,9 @@ export default function Edit() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const res = await axios.get(`http://localhost:5001/api/user/posts/${id}`);
+        const res = await axios.get(
+          `http://localhost:5002/api/posts/posts/${id}, {withCredentials: true}`
+        );
         setPost(res.data);
       } catch (error) {
         console.error("Error fetching post data:", error);
@@ -84,12 +86,12 @@ export default function Edit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5001/api/user/posts/${id}`, {
+      await axios.put(`http://localhost:5002/api/posts/posts/${id}`, {
         ...post,
         img: image || post.img,
         vid: video || post.vid,
       });
-      nav('/post');
+      nav("/post");
     } catch (error) {
       console.error("Error updating post:", error);
     }
@@ -103,12 +105,12 @@ export default function Edit() {
             <h1 className="text-center text-orange-500 text-xl font-bold col-span-6">
               Edit Post
             </h1>
-            <input 
-              type="text" 
+            <input
+              type="text"
               name="title"
               value={post.title}
               onChange={handleChange}
-              placeholder="Title" 
+              placeholder="Title"
               className="w-[40%] h-[30px] bg-orange-200 font-bold text-xl text-orange-700 placeholder:text-orange-600 placeholder:opacity-50 border border-slate-200 col-span-6 resize-none outline-none rounded-lg p-2 duration-300 focus:border-orange-600"
             />
             <textarea
@@ -118,8 +120,8 @@ export default function Edit() {
               placeholder="What do you want to talk about..."
               className="bg-orange-100 font-bold h-[400px] placeholder:text-orange-600 placeholder:opacity-50 border border-slate-200 col-span-6 resize-none outline-none rounded-lg p-2 duration-300 focus:border-orange-600"
             />
-            <button 
-              className="fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-orange-400 border border-slate-200" 
+            <button
+              className="fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-orange-400 border border-slate-200"
               onClick={() => widgetRef.current.open()}
             >
               <div className="w-full max-w-sm mx-auto">
@@ -137,16 +139,13 @@ export default function Edit() {
                     <circle cx="8.5" cy="8.5" r="1.5" />
                     <polyline points="21 15 16 10 5 21" />
                   </svg>
-                  <input
-                    name="img"
-                    className="custom-file-input hidden"
-                  />
+                  <input name="img" className="custom-file-input hidden" />
                 </label>
                 <h1 className="font-bold text-gray-400">Add Image</h1>
               </div>
             </button>
-            <button 
-              className="fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-orange-400 border border-slate-200" 
+            <button
+              className="fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-orange-400 border border-slate-200"
               onClick={() => widgetRef2.current.open()}
             >
               <label>
@@ -163,10 +162,7 @@ export default function Edit() {
                     d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
-                <input
-                  name="vid"
-                  className="custom-file-input hidden"
-                />
+                <input name="vid" className="custom-file-input hidden" />
                 <h1 className="font-bold text-gray-400">Add Video</h1>
               </label>
             </button>

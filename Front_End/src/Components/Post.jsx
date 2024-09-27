@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function PostPage() {
-  const email = localStorage.getItem('email');
+  localStorage.getItem("email");
   const [posts, setPosts] = useState([]);
   const [showImage, setShowImage] = useState([]);
   const [expandedContent, setExpandedContent] = useState([]);
@@ -13,10 +13,8 @@ export default function PostPage() {
   useEffect(() => {
     const checkEmail = async () => {
       try {
-        const res = await axios.get(`http://localhost:5001/api/user/check`, {
-          params: { added_by: email }
-        });
-        if (res.data.message === "Successfully email is checked") {
+        const res = await axios.get(`http://localhost:5002/api/posts/logedinuserpost`, {withCredentials: true});
+        if (res.data.posts.length > 0) {
           setPosts(res.data.posts);
           setShowImage(Array(res.data.posts.length).fill(false));
           setExpandedContent(Array(res.data.posts.length).fill(false));
@@ -27,7 +25,9 @@ export default function PostPage() {
     };
 
     checkEmail();
-  }, [email]);
+  }, []);
+
+  console.log("posts:",posts);
 
   const handleArrowClick = (index) => {
     const newShowImage = [...showImage];
@@ -43,7 +43,7 @@ export default function PostPage() {
 
   const handleDelete = async (postId) => {
     try {
-      const res = await axios.delete(`http://localhost:5001/api/user/posts/${postId}`);
+      const res = await axios.delete(`http://localhost:5002/api/posts/posts/${postId}`, {withCredentials: true});
       setPosts(res.data.posts);
     } catch (error) {
       console.error("Error deleting post:", error);
@@ -58,10 +58,12 @@ export default function PostPage() {
     <div className="w-full h-screen flex">
       <div className="bg-slate-50 w-full h-[1200px]">
         <div className="pt-[3%] pl-[10%]">
-          <div className="w-[15%] bg-slate-200 p-2 rounded-lg shadow-lg bg-slate-400 hover:bg-blue-400">
+          <div className="w-[15%] p-2 rounded-lg shadow-lg bg-slate-400 hover:bg-blue-400">
             <Link to="/add">
               <div className="flex justify-between items-center mb-4 mt-2">
-                <h1 className="text-xl font-bold text-gray-700 text-cyan-50">Post yours:</h1>
+                <h1 className="text-xl font-bold text-cyan-50">
+                  Add your Posts:
+                </h1>
                 <button
                   title="Add New"
                   className="group cursor-pointer outline-none hover:rotate-90 duration-300"
@@ -89,9 +91,14 @@ export default function PostPage() {
             {posts.length > 0 ? (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {posts.map((post, index) => (
-                  <div key={index} className="bg-white border rounded-lg shadow-md overflow-hidden">
+                  <div
+                    key={index}
+                    className="bg-white border rounded-lg shadow-md overflow-hidden"
+                  >
                     <div className="p-4">
-                      <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
+                      <h3 className="text-lg font-semibold mb-2">
+                        {post.title}
+                      </h3>
                       <div className="flex flex-col space-y-2 mb-4">
                         {post.hasVid ? (
                           <>
@@ -102,20 +109,34 @@ export default function PostPage() {
                                   className="mt-2 text-blue-500 hover:underline"
                                   onClick={() => handleArrowClick(index)}
                                 >
-                                  {showImage[index] ? 'Hide Image' : 'Show Image'}
+                                  {showImage[index]
+                                    ? "Hide Image"
+                                    : "Show Image"}
                                 </button>
                                 {showImage[index] && (
-                                  <img className="w-full h-60 object-cover mt-2" src={post.img} alt="" />
+                                  <img
+                                    className="w-full h-60 object-cover mt-2"
+                                    src={post.img}
+                                    alt=""
+                                  />
                                 )}
                               </>
                             )}
                           </>
                         ) : (
-                          post.hasImg && <img className="w-full h-60 object-cover" src={post.img} alt="" />
+                          post.hasImg && (
+                            <img
+                              className="w-full h-60 object-cover"
+                              src={post.img}
+                              alt=""
+                            />
+                          )
                         )}
                       </div>
                       <p className="text-gray-700 mb-4">
-                        {expandedContent[index] ? post.post : `${post.post.slice(0, 100)}...`}
+                        {expandedContent[index]
+                          ? post.post
+                          : `${post.post.slice(0, 100)}...`}
                       </p>
                       <div className="flex justify-between items-center">
                         <p className="text-sm text-gray-500">{post.date}</p>
@@ -123,20 +144,20 @@ export default function PostPage() {
                           className="text-blue-500 hover:underline"
                           onClick={() => handleReadMoreClick(index)}
                         >
-                          {expandedContent[index] ? 'Read less' : 'Read more'}
+                          {expandedContent[index] ? "Read less" : "Read more"}
                         </button>
                       </div>
                     </div>
                     <div className="flex justify-between">
-                      <button 
-                        onClick={() => handleEdit(post._id)} 
-                        className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+                      <button
+                        onClick={() => handleEdit(post._id)}
+                        className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg ml-5 mb-5 border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                       >
                         Edit
                       </button>
-                      <button 
-                        onClick={() => handleDelete(post._id)} 
-                        className="cursor-pointer transition-all bg-orange-500 text-white px-6 py-2 rounded-lg border-orange-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+                      <button
+                        onClick={() => handleDelete(post._id)}
+                        className="cursor-pointer transition-all bg-orange-500 text-white px-6 py-2 mr-5 mb-5 rounded-lg border-orange-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                       >
                         Delete
                       </button>
@@ -145,7 +166,9 @@ export default function PostPage() {
                 ))}
               </div>
             ) : (
-              <p className="font-semibold text-orange-600 text-xl mt-5">No posts found...</p>
+              <p className="font-semibold text-orange-600 text-xl mt-5">
+                No posts found...
+              </p>
             )}
           </div>
         </div>

@@ -9,31 +9,34 @@ function ProfileEdit() {
     professional: "",
     workingAt: "",
     about: "",
-    profileImage: ""
+    profileImage: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
   const emailId = localStorage.getItem("email");
- console.log(emailId);
+  console.log(emailId);
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onload = async (e) => {
       try {
-        const response = await axios.post('https://api.cloudinary.com/v1_1/dioirlnnn/image/upload', {
-          file: e.target.result,
-          upload_preset: "hhzfw36i"
-        });
-        console.log(response.data.secure_url)
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dioirlnnn/image/upload",
+          {
+            file: e.target.result,
+            upload_preset: "hhzfw36i",
+          }
+        );
+        console.log(response.data.secure_url);
         setData((prevData) => ({
           ...prevData,
-          profileImage: response.data.secure_url
+          profileImage: response.data.secure_url,
         }));
       } catch (error) {
         console.log("error", error);
@@ -42,36 +45,35 @@ function ProfileEdit() {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit =  (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-        setTimeout(async()=>{
-            try {
-                    const res = await axios.post("http://localhost:5001/api/user/edit", {
-                        email: emailId,
-                        data: {
-                          fullname: data.fullName, 
-                          location: data.location,
-                          age: data.age,
-                          professional: data.professional,
-                          workingAt: data.workingAt,
-                          profileImage: data.profileImage 
-                        }
-                      });
-                      console.log(res);
-                
-                } catch (error) {
-                  console.log(error);
-                }
-        },2000)
+    setTimeout(async () => {
+      try {
+        const res = await axios.post("http://localhost:5002/api/user/edit", {
+          email: emailId,
+          data: {
+            fullname: data.fullName,
+            location: data.location,
+            age: data.age,
+            professional: data.professional,
+            workingAt: data.workingAt,
+            profileImage: data.profileImage,
+          },
+        });
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    }, 2000);
   };
-  
-  
 
   return (
     <>
       <div className="flex flex-col items-center justify-center h-screen dark bg-[url('./assets/BG.png')]">
         <div className="w-full max-w-md bg-gray-200 rounded-lg shadow-md p-6 border border-orange-700 border-4">
-          <h2 className="text-2xl font-bold text-black mb-4">Edit your details</h2>
+          <h2 className="text-2xl font-bold text-black mb-4">
+            Edit your details
+          </h2>
 
           <form className="flex flex-col" onSubmit={handleSubmit}>
             <input

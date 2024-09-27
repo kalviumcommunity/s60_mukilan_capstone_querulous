@@ -1,18 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
-import axios from 'axios';
+import { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function PostAdd() {
   const [post, setPost] = useState("");
-  const [image, setImage] = useState("");
-  const [video, setVideo] = useState("");
+  const [mediaFile, setMediaFile] = useState("");
+  // const [video, setVideo] = useState("");
   const email = localStorage.getItem("email");
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const nav = useNavigate();
   const cloudinary = useRef();
   const widgetRef = useRef();
-  const cloudinary2 = useRef();
-  const widgetRef2 = useRef();
+  // const cloudinary2 = useRef();
+  // const widgetRef2 = useRef();
 
   useEffect(() => {
     if (!window.cloudinary) {
@@ -23,41 +23,43 @@ export default function PostAdd() {
     cloudinary.current = window.cloudinary;
     widgetRef.current = cloudinary.current.createUploadWidget(
       {
-        cloudName: 'dioirlnnn',
-        uploadPreset: 'dawl8vga',
+        cloudName: "dioirlnnn",
+        uploadPreset: "dawl8vga",
       },
       (error, result) => {
         if (error) {
           console.log("Upload error:", error);
         } else if (result && result.event === "success") {
           console.log("Upload result:", result.info.secure_url);
-          setImage(result.info.secure_url);
+          setMediaFile(result.info.secure_url);
         }
       }
     );
   }, []);
 
-  useEffect(() => {
-    if (!window.cloudinary) {
-      console.log("Cloudinary script not loaded.");
-      return;
-    }
-    cloudinary2.current = window.cloudinary;
-    widgetRef2.current = cloudinary2.current.createUploadWidget(
-      {
-        cloudName: 'dioirlnnn',
-        uploadPreset: 'rlz83089',
-      },
-      (error, result) => {
-        if (error) {
-          console.log("Upload error 2:", error);
-        } else if (result && result.event === "success") {
-          console.log("Upload result2:", result.info.secure_url);
-          setVideo(result.info.secure_url);
-        }
-      }
-    );
-  }, []);
+  console.log("Media File:", mediaFile);
+
+  // useEffect(() => {
+  //   if (!window.cloudinary) {
+  //     console.log("Cloudinary script not loaded.");
+  //     return;
+  //   }
+  //   cloudinary2.current = window.cloudinary;
+  //   widgetRef2.current = cloudinary2.current.createUploadWidget(
+  //     {
+  //       cloudName: "dioirlnnn",
+  //       uploadPreset: "rlz83089",
+  //     },
+  //     (error, result) => {
+  //       if (error) {
+  //         console.log("Upload error 2:", error);
+  //       } else if (result && result.event === "success") {
+  //         console.log("Upload result2:", result.info.secure_url);
+  //         setVideo(result.info.secure_url);
+  //       }
+  //     }
+  //   );
+  // }, []);
 
   const PostFunc = (e) => {
     const { value } = e.target;
@@ -71,41 +73,41 @@ export default function PostAdd() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    
+
     const containerValue = {
       post: post,
-      img: image,
-      vid: video,
+      mediaFile: mediaFile,
       added_by: email,
       title: title,
-      date: date
+      date: date,
     };
 
     try {
-      const response = await axios.post('http://localhost:5001/api/user/post', containerValue, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await axios.post(
+        "http://localhost:5002/api/posts/post",
+        containerValue,
+        {
+          withCredentials: true,}
+      );
 
       if (response.status === 201) {
-        console.log('Post created successfully');
-        nav('/post')
+        console.log("Post created successfully");
+        nav("/post");
       } else {
-        console.error('Error creating post');
+        console.error("Error creating post");
       }
     } catch (error) {
-      console.log('Error:', error);
+      console.log("Error:", error);
     }
   };
 
   const dateFunc = async () => {
     try {
-      const res = await axios.get('http://localhost:5001/api/user/date');
-      console.log('Current Date:', res.data.currentDate); 
+      const res = await axios.get("http://localhost:5002/api/posts/date", {withCredentials: true});
+      console.log("Current Date:", res.data.currentDate);
       setDate(res.data.currentDate);
     } catch (error) {
-      console.error('Error fetching date:', error);
+      console.error("Error fetching date:", error);
     }
   };
 
@@ -120,10 +122,10 @@ export default function PostAdd() {
           <h1 className="text-center text-orange-500 text-xl font-bold col-span-6">
             Post
           </h1>
-          <input 
-            type="text" 
-            placeholder="   Title" 
-            onChange={titleChange} 
+          <input
+            type="text"
+            placeholder="   Title"
+            onChange={titleChange}
             className="w-[40%] h-[30px] bg-orange-200 font-bold text-xl text-orange-700 placeholder:text-orange-600 placeholder:opacity-50 border border-slate-200 col-span-6 resize-none outline-none rounded-lg p-2 duration-300 focus:border-orange-600"
           />
           <textarea
@@ -133,8 +135,8 @@ export default function PostAdd() {
             placeholder="What do you want to talk about..."
             className="bg-orange-100 font-bold h-[400px] placeholder:text-orange-600 placeholder:opacity-50 border border-slate-200 col-span-6 resize-none outline-none rounded-lg p-2 duration-300 focus:border-orange-600"
           />
-          <button 
-            className="fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-orange-400 border border-slate-200" 
+          <button
+            className="fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-orange-400 border border-slate-200"
             onClick={() => widgetRef.current.open()}
           >
             <div className="w-full max-w-sm mx-auto">
@@ -154,15 +156,15 @@ export default function PostAdd() {
                 </svg>
                 <input
                   name="media"
-                  value={image}
+                  value={mediaFile}
                   className="custom-file-input hidden"
                 />
               </label>
               <h1 className="font-bold text-gray-400">Add Image</h1>
             </div>
           </button>
-          <button 
-            className="fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-orange-400 border border-slate-200" 
+          {/* <button
+            className="fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-orange-400 border border-slate-200"
             onClick={() => widgetRef2.current.open()}
           >
             <label>
@@ -186,17 +188,18 @@ export default function PostAdd() {
               />
               <h1 className="font-bold text-gray-400">Add Video</h1>
             </label>
-          </button>
-          <span className="col-span-2"></span>
+          </button> */}
+          <span className="col-span-3"></span>
           <button
             onClick={handleClick}
-            className="bg-slate-100 stroke-orange-600 border border-orange-200 col-span-2 flex justify-center rounded-lg p-2 duration-300 hover:border-orange-600 hover:text-white focus:stroke-blue-200 focus:bg-orange-400"
+            className="bg-slate-100 stroke-orange-600 border border-orange-200 col-span-2 flex justify-center items-center rounded-lg p-2 duration-300 hover:border-orange-600 hover:text-white focus:stroke-blue-200 focus:bg-orange-400"
           >
             <svg
               fill="none"
               viewBox="0 0 24 24"
               height="30px"
               width="30px"
+              stroke="orange"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
@@ -215,8 +218,7 @@ export default function PostAdd() {
           </button>
         </div>
       </div>
-      <div>
-      </div>
+      <div></div>
     </div>
   );
 }
