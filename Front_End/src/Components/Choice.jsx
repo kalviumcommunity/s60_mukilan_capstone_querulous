@@ -24,7 +24,9 @@ export default function ChoicePage() {
 
   const TopicCard = ({ topic, id, handleClick, isSelected }) => (
     <div
-      className={`h-32 ${isSelected ? `${topic.color}` : 'bg-orange-400'} border-black border-4 rounded-lg flex justify-center items-center transform hover:scale-105 transition-transform duration-300`}
+      className={`h-32 ${
+        isSelected ? `${topic.color}` : "bg-orange-400"
+      } border-black border-4 rounded-lg flex justify-center items-center transform hover:scale-105 transition-transform duration-300`}
       onClick={() => handleClick(id, topic.label)}
     >
       <h1 className="text-white text-1xl font-semibold">{topic.label}</h1>
@@ -46,11 +48,18 @@ export default function ChoicePage() {
 
   const handleClickon = async () => {
     try {
-      const response = await axios.post("http://localhost:5001/api/user/choice", {
-        email: localStorage.getItem("email"),
-        data: selectedTopics,
-      });
-      if (response.status === 200 && response.data.message === "Successfully saved user's choice") {
+      const response = await axios.post(
+        "http://localhost:5002/api/posts/choice",
+        {
+          email: localStorage.getItem("email"),
+          data: selectedTopics,
+        },
+        { withCredentials: true }
+      );
+      if (
+        response.status === 200 &&
+        response.data.message === "Successfully saved user's choice"
+      ) {
         alert("Success");
         console.log("Success");
       }
@@ -70,9 +79,9 @@ export default function ChoicePage() {
 
   useEffect(() => {
     gsap.fromTo(
-      '.header',
-      { x: '-100%', opacity: 0 },
-      { x: '0%', opacity: 1, duration: 1, ease: 'power4.out' }
+      ".header",
+      { x: "-100%", opacity: 0 },
+      { x: "0%", opacity: 1, duration: 1, ease: "power4.out" }
     );
   }, []);
 
@@ -82,7 +91,9 @@ export default function ChoicePage() {
         <div className="w-full h-[146%] bg-orange-100 shadow-lg">
           <div className="bg-orange-500 text-white text-center py-7 px-20 rounded-lg shadow-xl mb-8 mt-5 header">
             <h1 className="text-3xl font-bold">Choose Your Topic</h1>
-            <p className="text-lg mt-2">What Are You feel trouble or aware of it?</p>
+            <p className="text-lg mt-2">
+              What Are You feel trouble or aware of it?
+            </p>
           </div>
 
           <div className="grid grid-cols-3 gap-6 w-4/5 mx-auto">
@@ -132,7 +143,10 @@ export default function ChoicePage() {
                   ></path>
                 </svg>
               </span>
-              <span className="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white dark:group-hover:text-gray-200 " onClick={handleClickon}>
+              <span
+                className="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white dark:group-hover:text-gray-200 "
+                onClick={handleClickon}
+              >
                 Get Started
               </span>
             </div>

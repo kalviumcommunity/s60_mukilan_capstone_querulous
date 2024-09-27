@@ -11,7 +11,13 @@ import PostPage from './Components/Post';
 import PostAdd from './Components/PostAdd';
 import Edit from './Components/Edit';
 import Connected from './Components/Connected';
+import {useAuth} from "../context/AuthContext"
 function App() {
+
+  const {isAuthenticated} = useAuth();
+  if(!isAuthenticated){
+    return <LandingPage/>
+  }
 
   return (
     <>

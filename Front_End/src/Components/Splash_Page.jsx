@@ -53,10 +53,10 @@ export default function Splash_Page() {
         <h1 className="text-4xl font-bold text-gray-800 mt-36 ml-11" ref={myfunc5}>
       {splitText("Let's solve problem together")}
     </h1>
-          <p className="ml-11 font-semibold text-sky-800">Navigate challenges effortlessly with our intuitive platform. Let's turn obstacles into opportunities together. Dive in and discover a new way to problem-solve!</p>
+          <p className="ml-11 font-semibold text-sky-800">Navigate challenges effortlessly with our intuitive platform. Let&spos;s turn obstacles into opportunities together. Dive in and discover a new way to problem-solve!</p>
           <div className="bg-white p-10 rounded-lg shadow-lg w-11/12 h-64 ml-6">
             <h4 className="text-3xl font-bold text-gray-700" >Welcome to Querulous</h4>
-            <p className="mt-4 text-lg text-blue-500">Join me, let's tackle challenges hand in hand</p>
+            <p className="mt-4 text-lg text-blue-500">Join me, let&spos;s tackle challenges hand in hand</p>
             <div className="w-full h-24 flex items-center justify-center cursor-pointer ml-11">
               <Link to="/landingPage">
                 <div className="relative inline-flex items-center justify-start py-3 pl-4 pr-12 overflow-hidden font-semibold shadow text-orange-600 transition-all duration-150 ease-in-out rounded hover:pl-10 hover:pr-6 bg-gray-50 dark:bg-gray-700 dark:text-white dark:hover:text-gray-200 dark:shadow-none group">
