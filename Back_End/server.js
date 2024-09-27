@@ -5,6 +5,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const postRoutes = require("./routes/postRoutes")
 const userRoutes = require("./routes/userRoutes");
+const publicRoutes = require("./routes/publicRoutes");
 const { authenticate } = require("./middleware/auth");
 
 require("dotenv").config();
@@ -21,7 +22,7 @@ app.use(cors({
 app.use(express.json());
 app.use("/api/user", userRoutes);
 app.use("/api/posts", authenticate, postRoutes);
-
+app.use("/api/getallposts",publicRoutes)
 app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
