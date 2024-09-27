@@ -4,7 +4,7 @@ const { User } = require('../UserSchema');
 const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
-
+const jwt = require('jsonwebtoken');
 
 
 const emailFile = path.join(__dirname, 'emails.txt');
@@ -70,13 +70,22 @@ router.post('/register', async (req, res) => {
             dateOfBirth
         });
 
-       
+        const jwt_token = jwt.sign({ userID: user._id }, process.env.JWT_SECRET, {
+            expiresIn: '7d',
+        });
 
+        res.cookie("token", jwt_token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+                maxAge: 604800000, // 7 days
+                sameSite: "Strict", // or 'Lax', depending on your needs
+            });
+       
         await user.save();
         const emails = readEmails();
         emails.push(email)
         writeFile(emails)
-        res.status(201).json({ message: 'User registered successfully'});
+        res.status(201).json({ message: 'User registered successfully', user, token: jwt_token });
 
     } catch (error) {
         console.error('Error in register endpoint:', error.message);
@@ -102,20 +111,59 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid password' });
         }
 
-     
+        const jwt_token = jwt.sign({ userID: user._id }, process.env.JWT_SECRET, {
+            expiresIn: '7d',
+        });
+
+        res.cookie("token", jwt_token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+                maxAge: 604800000, // 7 days
+                sameSite: "Strict", // or 'Lax', depending on your needs
+            });
         //send otp to user email
 
-        res.status(200).json({ message: 'Logged in successfully'});
+        res.status(200).json({ message: 'Logged in successfully', user, token: jwt_token });
     } catch (error) {
         console.error('Error in login endpoint:', error.message);
         res.status(500).json({ message: 'Server Error', error: error.message });
     }
 });
 
-router.get("/alluser", async (req, res)=>{
-    const user = await User.find();
+// router.get("/alluser", async (req, res)=>{
+//     const user = await User.find();
 
-    res.send(user)
-})
+//     res.send(user)
+// })
+
+router.post("/verification", async (req, res) => {
+    const { email } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        
+        if (!user) {
+            return res.status(400).send({ message: "Invalid Email" });
+        }
+        
+        // Convert ObjectId to string using toString() method
+        const userIdString = user._id.toString();
+        console.log(userIdString, "User ID as string");
+        
+        const jwt_token = jwt.sign({ userID: userIdString }, process.env.JWT_SECRET, {
+            expiresIn: '7d',
+        });
+
+        res.cookie("token", jwt_token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+                maxAge: 604800000, // 7 days
+                sameSite: "Strict", // or 'Lax', depending on your needs
+            });
+        res.status(200).send({ message: "Successfully email is checked" });
+    } catch (err) {
+        res.status(500).send({ message: "Server Error", error: err.message });
+    }
+});
+
 
 module.exports = router;
