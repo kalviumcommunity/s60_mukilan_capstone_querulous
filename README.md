@@ -50,6 +50,8 @@ We welcome contributions to help find solutions for human problems! To contribut
     ```
 3. **Make Changes**: Implement your enhancements and features.
 4. **Commit and Push**: Commit your changes and push them to your forked repository.
+
+these are the commands for git 
     ```
     git add .
     git commit -m "Description of changes made"
