@@ -4,43 +4,7 @@ const { User, Post } = require('../UserSchema');
 const nodeMailer = require("nodemailer");
 
 
-router.post("/otp", async (req, res) => {
-    const { email } = req.body;
-    const randomOtp = Math.floor(1000 + Math.random() * 9000);
-    try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ message: "Invalid Email" });
-        }
-        var transporter = nodeMailer.createTransport({
-            service: "outlook",
-            auth: {
-                user: "rmr09570@gmail.com",
-                pass: "sodbwqertuvtbpjc"
-            }
-        });
-        var mailOptions = {
-            from: "rmr09570@gmail.com",
-            to: email,
-            subject: "OTP Verification",
-            text: `your Otp ${randomOtp}`
-        }
-
-        transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-                console.log(error);
-                res.status(500).json({ message: "Error sending OTP" });
-            } else {
-                console.log('Email sent: ' + info.response);
-                res.status(200).json({ message: "OTP sent successfully", data: randomOtp });
-            }
-        });
-
-    } catch (er) {
-        console.log(er.message);
-        res.status(500).json({ message: "Server Error", error: er.message });
-    }
-});
+//otp
 
 // choice
 router.post("/choice", async (req, res) => {
