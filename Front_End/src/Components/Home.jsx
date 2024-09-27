@@ -9,20 +9,7 @@ export default function HomePage() {
   // const [isClicked, setIsClicked] = useState(false);
   // const [ispop, setPop] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:5002/api/posts/data", {withCredentials: true});
-        if (response.data.message === "successfull") {
-          setData(response.data.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
-    fetchData();
-  }, []);
 
   console.log(data);
 
