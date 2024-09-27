@@ -12,6 +12,7 @@ import PostAdd from './Components/PostAdd';
 import Edit from './Components/Edit';
 import Connected from './Components/Connected';
 import {useAuth} from "../context/AuthContext"
+import OTP from './Components/OTP';
 function App() {
 
   const {isAuthenticated} = useAuth();
@@ -34,6 +35,7 @@ function App() {
            <Route path="/add" element={<PostAdd/>}/>
            <Route path="/editPost/:id" element={<Edit/>}/>
            <Route path="/connected" element={<Connected/>}/>
+           <Route path="/OTP" element={<OTP/>}/>
        </Routes>
    
     </>

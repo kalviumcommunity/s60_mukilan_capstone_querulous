@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
+const nodemailer = require('nodemailer');
 
 const emailFile = path.join(__dirname, 'emails.txt');
 //read
@@ -165,5 +165,45 @@ router.post("/verification", async (req, res) => {
     }
 });
 
+// OTP route
+router.post("/otp", async (req, res) => {
+    const { email } = req.body;
+    const randomOtp = Math.floor(1000 + Math.random() * 9000);
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: "Invalid Email" });
+        }
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "tamilboysince2004@gmail.com",
+                pass: "vyvk ybaq vxhu opnx", 
+            }
+        });
+
+        const mailOptions = {
+            from: "tamilboysince2004@gmail.com",
+            to: email,
+            subject: "OTP Verification",
+            text: `Your OTP is ${randomOtp}`,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+                res.status(500).json({ message: "Error sending OTP" });
+            } else {
+                console.log('Email sent: ' + info.response);
+                res.status(200).json({ message: "OTP sent successfully", otp: randomOtp });
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
+});
 
 module.exports = router;
