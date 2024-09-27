@@ -4,10 +4,58 @@ const { User, Post } = require('../UserSchema');
 const nodeMailer = require("nodemailer");
 
 
-//otp
+router.post("/otp", async (req, res) => {
+    const { email } = req.body;
+    const randomOtp = Math.floor(1000 + Math.random() * 9000);
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: "Invalid Email" });
+        }
+        var transporter = nodeMailer.createTransport({
+            service: "outlook",
+            auth: {
+                user: "rmr09570@gmail.com",
+                pass: "sodbwqertuvtbpjc"
+            }
+        });
+        var mailOptions = {
+            from: "rmr09570@gmail.com",
+            to: email,
+            subject: "OTP Verification",
+            text: `your Otp ${randomOtp}`
+        }
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+                res.status(500).json({ message: "Error sending OTP" });
+            } else {
+                console.log('Email sent: ' + info.response);
+                res.status(200).json({ message: "OTP sent successfully", data: randomOtp });
+            }
+        });
+
+    } catch (er) {
+        console.log(er.message);
+        res.status(500).json({ message: "Server Error", error: er.message });
+    }
+});
 
 // choice
-
+router.post("/choice", async (req, res) => {
+    const { email, data } = req.body;
+    try {
+        await User.findOneAndUpdate(
+            { email },
+            { selectedTopics: data }
+        );
+        res.status(200).json({ message: "Successfully saved user's choice" });
+    } catch (error) {
+        console.error("Error in choice endpoint:", error.message);
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
+});
 
 // Edit
 router.post("/edit", async (req, res) => {
@@ -40,18 +88,18 @@ router.post("/profile", async (req, res) => {
 });
 
 // Firebase Email verification
-router.post("/verification", async (req, res) => {
-    const { email } = req.body;
-    try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).send({ message: "Invalid Email" });
-        }
-        res.status(200).send({ message: "Successfully email is checked" });
-    } catch (err) {
-        res.status(500).send({ message: "Server Error", error: err.message });
-    }
-});
+// router.post("/verification", async (req, res) => {
+//     const { email } = req.body;
+//     try {
+//         const user = await User.findOne({ email });
+//         if (!user) {
+//             return res.status(400).send({ message: "Invalid Email" });
+//         }
+//         res.status(200).send({ message: "Successfully email is checked" });
+//     } catch (err) {
+//         res.status(500).send({ message: "Server Error", error: err.message });
+//     }
+// });
 
 //Post page
 router.post("/post", async (req, res) => {
@@ -105,7 +153,11 @@ router.post("/post", async (req, res) => {
 // });
 
 //Date
-
+router.get("/date", (req, res) => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().split('T')[0];
+    res.json({ currentDate: formattedDate });
+});
 
 //Delete post
 
@@ -161,19 +213,19 @@ router.put('/posts/:id', async (req, res) => {
 // **Home page request**
 
 //getting data and display in home
-router.get('/data', async (req, res) => {
-    try {
-        const Homedata = await Post.find({}).populate('added_by');
-        if (!Homedata) {
-            return res.status(404).json({ message: 'Post not found' })
-        }
-        res.status(200).json({ message: 'successfull', data: Homedata });
-        console.log(Homedata)
-    }
-    catch (error) {
-        res.status(500).json({ message: 'Server Error', error: error.message });
-    }
-})
+// router.get('/data', async (req, res) => {
+//     try {
+//         const Homedata = await Post.find({}).populate('added_by');
+//         if (!Homedata) {
+//             return res.status(404).json({ message: 'Post not found' })
+//         }
+//         res.status(200).json({ message: 'successfull', data: Homedata });
+//         console.log(Homedata)
+//     }
+//     catch (error) {
+//         res.status(500).json({ message: 'Server Error', error: error.message });
+//     }
+// })
 
 //Update password of user
 
