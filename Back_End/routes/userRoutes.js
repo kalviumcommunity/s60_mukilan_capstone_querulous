@@ -75,11 +75,12 @@ router.post('/register', async (req, res) => {
         });
 
         res.cookie("token", jwt_token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-                maxAge: 604800000, // 7 days
-                sameSite: "Strict", // or 'Lax', depending on your needs
-            });
+            httpOnly: true,
+            secure: true, // Always use secure cookies
+            maxAge: 604800000, // 7 days
+            sameSite: 'None', // Allow cross-site cookie setting
+            domain: '.onrender.com', // Adjust this to match your Render domain
+        });
        
         await user.save();
         const emails = readEmails();
@@ -116,11 +117,12 @@ router.post('/login', async (req, res) => {
         });
 
         res.cookie("token", jwt_token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-                maxAge: 604800000, // 7 days
-                sameSite: "Strict", // or 'Lax', depending on your needs
-            });
+            httpOnly: true,
+            secure: true, // Always use secure cookies
+            maxAge: 604800000, // 7 days
+            sameSite: 'None', // Allow cross-site cookie setting
+            domain: '.onrender.com', // Adjust this to match your Render domain
+        });
         //send otp to user email
 
         res.status(200).json({ message: 'Logged in successfully', user, token: jwt_token });
@@ -154,11 +156,12 @@ router.post("/verification", async (req, res) => {
         });
 
         res.cookie("token", jwt_token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-                maxAge: 604800000, // 7 days
-                sameSite: "Strict", // or 'Lax', depending on your needs
-            });
+            httpOnly: true,
+            secure: true, // Always use secure cookies
+            maxAge: 604800000, // 7 days
+            sameSite: 'None', // Allow cross-site cookie setting
+            domain: '.onrender.com', // Adjust this to match your Render domain
+        });
         res.status(200).send({ message: "Successfully email is checked" });
     } catch (err) {
         res.status(500).send({ message: "Server Error", error: err.message });
