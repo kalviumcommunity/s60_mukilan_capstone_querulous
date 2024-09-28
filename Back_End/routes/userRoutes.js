@@ -78,7 +78,7 @@ router.post('/register', async (req, res) => {
             httpOnly: true,
             secure: true, // Always use secure cookies
             maxAge: 604800000, // 7 days
-            sameSite: 'None', // Allow cross-site cookie setting
+            sameSite: 'Lax', // Allow cross-site cookie setting
             domain: '.onrender.com', // Adjust this to match your Render domain
         });
        
@@ -120,7 +120,7 @@ router.post('/login', async (req, res) => {
             httpOnly: true,
             secure: true, // Always use secure cookies
             maxAge: 604800000, // 7 days
-            sameSite: 'None', // Allow cross-site cookie setting
+            sameSite: 'Lax', // Allow cross-site cookie setting
             domain: '.onrender.com', // Adjust this to match your Render domain
         });
         //send otp to user email
@@ -159,7 +159,7 @@ router.post("/verification", async (req, res) => {
             httpOnly: true,
             secure: true, // Always use secure cookies
             maxAge: 604800000, // 7 days
-            sameSite: 'None', // Allow cross-site cookie setting
+            sameSite: 'Lax', // Allow cross-site cookie setting
             domain: '.onrender.com', // Adjust this to match your Render domain
         });
         res.status(200).send({ message: "Successfully email is checked" });
