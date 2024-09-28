@@ -34,7 +34,7 @@ export default function LandingPage() {
       console.log(response.data);
       if (response.data.message === "Logged in successfully") {
         localStorage.setItem("email", email);
-        localStorage.setItem("token", response.data.token);
+        // Remove this line: localStorage.setItem("token", response.data.token);
         nav("/home");
         console.log("success");
       }
