@@ -12,7 +12,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5002/api/getallposts/data", {withCredentials: true});
+        const response = await axios.get("https://s60-mukilan-capstone-querulous-1.onrender.com/api/getallposts/data", {withCredentials: true});
         if (response.data.message === "successfull") {
           setData(response.data.data);
         }

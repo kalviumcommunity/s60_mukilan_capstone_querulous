@@ -41,7 +41,7 @@ const SignUpForm = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5002/api/user/register",
+        "https://s60-mukilan-capstone-querulous-1.onrender.com/api/user/register",
         formData,
         { withCredentials: true } 
       );

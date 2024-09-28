@@ -59,4 +59,11 @@ these are the commands for git
     ```
 5. **Submit a Pull Request**: Finally, submit a pull request detailing the changes you made and the problem you solved.
 
+
+## Deployed Link: 
+
+Backend server: https://s60-mukilan-capstone-querulous-1.onrender.com   
+Frontend server: 
+
+
 Thank you for contributing to Querulous! We look forward to your innovative solutions and ideas. 🙌
