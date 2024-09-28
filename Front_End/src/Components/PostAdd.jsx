@@ -86,8 +86,7 @@ export default function PostAdd() {
       const response = await axios.post(
         "http://localhost:5002/api/posts/post",
         containerValue,
-        {
-          withCredentials: true,}
+        {withCredentials: true,}
       );
 
       if (response.status === 201) {
