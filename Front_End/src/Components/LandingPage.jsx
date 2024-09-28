@@ -28,7 +28,7 @@ export default function LandingPage() {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "https://s60-mukilan-capstone-querulous-1.onrender.com/api/user/login",
+        "https://s60-mukilan-capstone-querulous.onrender.com/api/user/login",
         { email, password },
         { withCredentials: true }
       );
@@ -73,7 +73,7 @@ export default function LandingPage() {
     signInWithPopup(auth, provider).then((res) => {
       console.log(res.user.email);
       axios
-        .post("https://s60-mukilan-capstone-querulous-1.onrender.com/api/user/verification", {
+        .post("https://s60-mukilan-capstone-querulous.onrender.com/api/user/verification", {
           email: res.user.email,
         })
         .then((reso) => {

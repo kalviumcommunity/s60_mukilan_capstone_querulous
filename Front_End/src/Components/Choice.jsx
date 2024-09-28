@@ -49,7 +49,7 @@ export default function ChoicePage() {
   const handleClickon = async () => {
     try {
       const response = await axios.post(
-        "https://s60-mukilan-capstone-querulous-1.onrender.com/api/posts/choice",
+        "https://s60-mukilan-capstone-querulous.onrender.com/api/posts/choice",
         {
           email: localStorage.getItem("email"),
           data: selectedTopics,

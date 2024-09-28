@@ -13,7 +13,7 @@ export default function PostPage() {
   useEffect(() => {
     const checkEmail = async () => {
       try {
-        const res = await axios.get(`https://s60-mukilan-capstone-querulous-1.onrender.com/api/posts/logedinuserpost`, {withCredentials: true});
+        const res = await axios.get(`https://s60-mukilan-capstone-querulous.onrender.com/api/posts/logedinuserpost`, {withCredentials: true});
         if (res.data.posts.length > 0) {
           setPosts(res.data.posts);
           setShowImage(Array(res.data.posts.length).fill(false));
@@ -43,7 +43,7 @@ export default function PostPage() {
 
   const handleDelete = async (postId) => {
     try {
-      const res = await axios.delete(`https://s60-mukilan-capstone-querulous-1.onrender.com/api/posts/posts/${postId}`, {withCredentials: true});
+      const res = await axios.delete(`https://s60-mukilan-capstone-querulous.onrender.com/api/posts/posts/${postId}`, {withCredentials: true});
       setPosts(res.data.posts);
     } catch (error) {
       console.error("Error deleting post:", error);

@@ -86,7 +86,7 @@ export default function Edit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://s60-mukilan-capstone-querulous-1.onrender.com/api/posts/posts/${id}`, {
+      await axios.put(`https://s60-mukilan-capstone-querulous.onrender.com/api/posts/posts/${id}`, {
         ...post,
         img: image || post.img,
         vid: video || post.vid,
