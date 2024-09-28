@@ -84,7 +84,7 @@ export default function PostAdd() {
 
     try {
       const response = await axios.post(
-        "https://s60-mukilan-capstone-querulous-1.onrender.com/api/posts/post",
+        "https://s60-mukilan-capstone-querulous.onrender.com/api/posts/post",
         containerValue,
         {withCredentials: true,}
       );
@@ -102,7 +102,7 @@ export default function PostAdd() {
 
   const dateFunc = async () => {
     try {
-      const res = await axios.get("https://s60-mukilan-capstone-querulous-1.onrender.com/api/posts/date", {withCredentials: true});
+      const res = await axios.get("https://s60-mukilan-capstone-querulous.onrender.com/api/posts/date", {withCredentials: true});
       console.log("Current Date:", res.data.currentDate);
       setDate(res.data.currentDate);
     } catch (error) {

@@ -30,7 +30,7 @@ export default function OTP() {
     // Handle sending OTP request
     const handleClick = async () => {
         try {
-            const response = await axios.post("https://s60-mukilan-capstone-querulous-1.onrender.com/api/user/otp", { email });
+            const response = await axios.post("https://s60-mukilan-capstone-querulous.onrender.com/api/user/otp", { email });
             console.log(response.data);
 
             if (response.status === 200 && response.data.message === "OTP sent successfully") {
