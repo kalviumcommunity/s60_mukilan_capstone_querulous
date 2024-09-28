@@ -62,8 +62,8 @@ these are the commands for git
 
 ## Deployed Link: 
 
-Backend server: https://s60-mukilan-capstone-querulous-1.onrender.com   
-Frontend server: 
+Backend server: https://s60-mukilan-capstone-querulous.onrender.com/  
+Frontend server: https://66f7b045e1063b861f74f7dd--statuesque-maamoul-4a9521.netlify.app/
 
 
 Thank you for contributing to Querulous! We look forward to your innovative solutions and ideas. 🙌
