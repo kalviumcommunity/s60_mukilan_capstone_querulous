@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import "firebase/firestore";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+axios.defaults.withCredentials = true;
 export default function LandingPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState("");
