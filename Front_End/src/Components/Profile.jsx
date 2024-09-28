@@ -9,7 +9,7 @@ function Profile() {
 
   const LoadingFunc = async () => {
     try {
-      const res = await axios.post("http://localhost:5002/api/user/profile", {
+      const res = await axios.post("https://s60-mukilan-capstone-querulous-1.onrender.com/api/user/profile", {
         email,
       });
       if (res.data.detail.data[0]) {

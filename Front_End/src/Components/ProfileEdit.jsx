@@ -49,7 +49,7 @@ function ProfileEdit() {
     e.preventDefault();
     setTimeout(async () => {
       try {
-        const res = await axios.post("http://localhost:5002/api/user/edit", {
+        const res = await axios.post("https://s60-mukilan-capstone-querulous-1.onrender.com/api/user/edit", {
           email: emailId,
           data: {
             fullname: data.fullName,

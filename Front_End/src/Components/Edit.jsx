@@ -67,7 +67,7 @@ export default function Edit() {
     const fetchPost = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5002/api/posts/posts/${id}, {withCredentials: true}`
+          `https://s60-mukilan-capstone-querulous-1.onrender.com/api/posts/posts/${id}, {withCredentials: true}`
         );
         setPost(res.data);
       } catch (error) {
@@ -86,7 +86,7 @@ export default function Edit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5002/api/posts/posts/${id}`, {
+      await axios.put(`https://s60-mukilan-capstone-querulous-1.onrender.com/api/posts/posts/${id}`, {
         ...post,
         img: image || post.img,
         vid: video || post.vid,
