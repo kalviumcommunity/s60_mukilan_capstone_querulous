@@ -15,10 +15,13 @@ import {useAuth} from "../context/AuthContext"
 import OTP from './Components/OTP';
 function App() {
 
-  const {isAuthenticated} = useAuth();
-  if(!isAuthenticated){
-    return <LandingPage/>
-  }
+  // const {isAuthenticated} = useAuth();
+  // if(!isAuthenticated){
+  //   return <Splash_Page/>
+  // }
+  // else{
+  //   return <HomePage/>
+  // }
 
   return (
     <>
