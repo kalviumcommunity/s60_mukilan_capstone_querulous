@@ -15,7 +15,7 @@ const MONGO_URL = process.env.MONGO_URL;
 
 app.use(cookieParser());
 app.use(cors({
-  origin: ["http://localhost:3000", "http://localhost:5173","https://onrender.com","https://netlify.app"],
+  origin: ["http://localhost:3000", "http://localhost:5173","https://onrender.com","https://netlify.app", "https://66f79bc8778c4d6b3feb4090--sweet-starlight-a8c09c.netlify.app"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
 }));
